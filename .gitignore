@@ -52,3 +52,10 @@ logs/
 
 ### macOS ###
 .DS_Store
+
+### DB ###
+festibook-db
+
+### env ###
+.env
+/src/main/resources/env.properties
