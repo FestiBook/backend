@@ -38,7 +38,7 @@ out/
 .vscode/
 
 ### Configuration ###
-src/main/resources/application-*.yml
+src/main/resources/application-localhost.yml
 !src/main/resources/application-sample.yml
 
 ### Docker ###
