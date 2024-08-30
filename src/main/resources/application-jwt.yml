@@ -1,4 +1,0 @@
-jwt:
-  token:
-    access-expire-length: 43200000 # 12시간
-    refresh-expire-length: 604800000 # 7일

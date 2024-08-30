@@ -1,9 +1,7 @@
 package com.festibook.festibook_backend.core;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -27,8 +25,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class BaseEntity {
 
   @Id
-  @Column(columnDefinition = "UUID")
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @CreatedDate
   protected LocalDateTime createdAt;

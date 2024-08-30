@@ -29,7 +29,7 @@ public class TokenService {
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 자동으로 강력한 키를 생성합니다.
     }
 
-    public String generateAccessToken(UUID userId) {
+    public String generateAccessToken(Long userId) {
         Claims claims = Jwts.claims().setSubject(userId.toString());
         return Jwts.builder().setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -48,7 +48,7 @@ public class TokenService {
 
     public String reGenerateAccessToken(HttpServletRequest request) { // 액세스 토큰 재발급
         validateRefreshToken(request);
-        UUID id = getUserIdFromToken(request);
+        Long id = getUserIdFromToken(request);
         return generateAccessToken(id);
     }
 
@@ -89,7 +89,7 @@ public class TokenService {
         }
     }
 
-    public UUID getUserIdFromToken(HttpServletRequest request) { // 토큰에서 userId 정보 꺼내기
+    public Long getUserIdFromToken(HttpServletRequest request) { // 토큰에서 userId 정보 꺼내기
         String token = resolveAccessToken(request);
         try {
             Claims claims = Jwts.parserBuilder()
@@ -97,9 +97,9 @@ public class TokenService {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return UUID.fromString(claims.getSubject());
+            return Long.parseLong(claims.getSubject());
         } catch (ExpiredJwtException e) {
-            return UUID.fromString(e.getClaims().getSubject());
+            return Long.parseLong(e.getClaims().getSubject());
         }
     }
 }
