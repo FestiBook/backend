@@ -78,7 +78,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private User findOrCreateUser(String name, String registrationId) {
         return userRepository.findByNickname(name).orElseGet(() -> {
             User newUser = User.builder()
-                    .id(UUID.randomUUID())
                     .nickname(name)
                     .platform(registrationId)
                     .build();
