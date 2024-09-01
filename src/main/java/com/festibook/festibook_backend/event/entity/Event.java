@@ -27,6 +27,10 @@ public class Event extends BaseEntity {
 
     private String originUrl;
 
+    private String startDate;
+
+    private String endDate;
+
     private String thumbnailUrl;
 
     private double mapX;
