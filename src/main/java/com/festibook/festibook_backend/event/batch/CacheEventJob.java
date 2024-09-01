@@ -60,6 +60,8 @@ public class CacheEventJob {
     event.setAddress2(item.getAddr2());
     event.setOriginUrl(item.getFirstimage());
     event.setThumbnailUrl(item.getFirstimage2());
+    event.setStartDate(item.getEventstartdate());
+    event.setEndDate(item.getEventenddate());
     event.setMapX(item.getMapx());
     event.setMapY(item.getMapy());
   }
@@ -72,6 +74,8 @@ public class CacheEventJob {
         .address2(item.getAddr2())
         .originUrl(item.getFirstimage())
         .thumbnailUrl(item.getFirstimage2())
+        .startDate(item.getEventstartdate())
+        .endDate(item.getEventenddate())
         .mapX(item.getMapx())
         .mapY(item.getMapy())
         .build();
