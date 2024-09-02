@@ -79,3 +79,7 @@ jwt:
 open-api:
   event-api:
     url: http://apis.data.go.kr/B551011/KorService1/searchFestival1
+
+springdoc:
+  swagger-ui:
+    path: /swagger
