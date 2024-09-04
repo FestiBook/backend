@@ -86,3 +86,7 @@ open-api:
 springdoc:
   swagger-ui:
     path: /swagger
+
+server:
+  error:
+    include-message: always # 임시로 오류 메시지 나오도록
