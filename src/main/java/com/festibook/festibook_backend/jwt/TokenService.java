@@ -7,11 +7,12 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -54,7 +55,7 @@ public class TokenService {
 
     public String resolveAccessToken(HttpServletRequest request) {
         try {
-            String header = request.getHeader("AUTHORIZATION");
+            String header = request.getHeader("Authorization");
             return header.substring("Bearer ".length());
         } catch (Exception e) {
             throw new JwtException("유효하지 않은 토큰");
@@ -63,18 +64,20 @@ public class TokenService {
 
     public String resolveRefreshToken(HttpServletRequest request) {
         try {
-            return request.getHeader("REFRESH-TOKEN");
+            return request.getHeader("Refresh-Token");
         } catch (Exception e) {
-            throw new JwtException("유효하지 않은 토큰");
+            throw new JwtException("유효하지 않은 Refresh 토큰입니다.");
         }
     }
 
-    public void validateAccessToken(HttpServletRequest request) { // 만료 여부 검사
+    public void validateAccessToken(HttpServletRequest request) {
         try {
             String token = resolveAccessToken(request);
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
-            throw new JwtException("토큰 만료");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Access 토큰이 만료되었습니다.");
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 Access 토큰입니다.");
         }
     }
 
@@ -82,10 +85,10 @@ public class TokenService {
         try {
             String token = resolveRefreshToken(request);
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
-        } catch (ExpiredJwtException e) { // 토큰이 만료된 경우
-            throw new JwtException("토큰 만료");
-        } catch (IllegalArgumentException e) { // 토큰이 비어있거나 형식이 잘못된 경우
-            throw new JwtException("유효하지 않은 토큰");
+        } catch (ExpiredJwtException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh 토큰이 만료되었습니다.");
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 Refresh 토큰입니다.");
         }
     }
 
