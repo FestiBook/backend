@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.festibook.festibook_backend.configuration.OpenApiProperty;
 import com.festibook.festibook_backend.core.util.OkhttpJsonRequest;
-import com.festibook.festibook_backend.external.event.dto.EventResponse;
-import com.festibook.festibook_backend.external.event.dto.EventResponse.Item;
-import java.util.List;
+import com.festibook.festibook_backend.external.event.dto.EventDetailCommonResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @RequiredArgsConstructor
 @Service
-public class CacheEventUseCase {
+public class ReadEventDetailCommonUseCase {
 
   private final OpenApiProperty openApiProperty;
   private final ObjectMapper objectMapper = new ObjectMapper().configure(
@@ -33,43 +31,42 @@ public class CacheEventUseCase {
   @Value("${open-api.service-key}")
   private String OPEN_API_SERVICE_KEY;
 
-  public CacheEventResponse execute(CacheEventRequest request) {
+  public ReadEventDetailCommonUseCase.ReadEventDetailCommonResponse execute(
+      ReadEventDetailCommonUseCase.ReadEventDetailCommonRequest request) {
     OkhttpJsonRequest okhttpJsonRequest = toJsonRequest(request);
     Response response = okhttpJsonRequest.request();
-    EventResponse eventResponse = null;
+    EventDetailCommonResponse eventDetailCommonResponse = null;
     try {
-      eventResponse = objectMapper.readValue(response.body().string(), EventResponse.class);
+      eventDetailCommonResponse = objectMapper.readValue(response.body().string(),
+          EventDetailCommonResponse.class);
     } catch (Exception e) {
       throw new RuntimeException("Failed to create OkhttpJsonRequest", e);
     }
-    return CacheEventResponse.builder()
-        .items(eventResponse.getResponse().getBody().getItems().getItem())
+    return ReadEventDetailCommonUseCase.ReadEventDetailCommonResponse.builder()
+        .eventDetailCommonResponse(eventDetailCommonResponse)
         .build();
   }
 
-  private CacheEventRequest toResult(Response response) {
-    return CacheEventRequest.builder().build();
-  }
-
-  public OkhttpJsonRequest toJsonRequest(CacheEventRequest request) {
-    if (openApiProperty == null || openApiProperty.getEventApi() == null
-        || openApiProperty.getEventApi().getUrl() == null) {
+  public OkhttpJsonRequest toJsonRequest(
+      ReadEventDetailCommonUseCase.ReadEventDetailCommonRequest request) {
+    if (openApiProperty == null || openApiProperty.getEventDetailApi() == null
+        || openApiProperty.getEventDetailApi().getCommonUrl() == null) {
       return null;
     }
-    String queryString = "?numOfRows=50"
+    String queryString = "?numOfRows=1"
         + "&pageNo=1"
         + "&MobileOS=ETC"
         + "&MobileApp=AppTest"
         + "&_type=json"
-        + "&listYN=Y"
-        + "&arrange=A"
-        + "&eventStartDate="
-        + request.getEventStartDate()
+        + "&defaultYN=Y"
+        + "&overviewYN=Y"
+        + "&contentId="
+        + request.getEventId()
         + "&serviceKey="
         + OPEN_API_SERVICE_KEY;
     try {
       OkhttpJsonRequest okhttpJsonRequest = new OkhttpJsonRequest(
-          openApiProperty.getEventApi().getUrl() + queryString, null, HttpMethod.GET);
+          openApiProperty.getEventDetailApi().getCommonUrl() + queryString, null, HttpMethod.GET);
       System.out.println("Request created successfully: " + request);
       return okhttpJsonRequest;
     } catch (Exception e) {
@@ -83,9 +80,9 @@ public class CacheEventUseCase {
   @Setter
   @SuperBuilder
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class CacheEventResponse {
+  public static class ReadEventDetailCommonResponse {
 
-    List<Item> items;
+    private EventDetailCommonResponse eventDetailCommonResponse;
   }
 
   @ToString
@@ -94,9 +91,10 @@ public class CacheEventUseCase {
   @Builder
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   @AllArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class CacheEventRequest {
+  public static class ReadEventDetailCommonRequest {
 
-    private String eventStartDate;
+    private Integer eventId;
   }
 
 }
+
