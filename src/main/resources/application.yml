@@ -74,11 +74,14 @@ jwt:
     access-expire-length: 43200000 # 12시간
     refresh-expire-length: 604800000 # 7일
 
-
-
 open-api:
   event-api:
     url: http://apis.data.go.kr/B551011/KorService1/searchFestival1
+  event-detail-api:
+    common-url: http://apis.data.go.kr/B551011/KorService1/detailCommon1
+    intro-url: http://apis.data.go.kr/B551011/KorService1/detailIntro1
+  service-key: ${OPEN_API_SERVICE_KEY}
+
 
 springdoc:
   swagger-ui:
