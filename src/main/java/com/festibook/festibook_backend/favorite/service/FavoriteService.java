@@ -28,10 +28,13 @@ public class FavoriteService {
 
         List<Long> heartEvents = getHeartEventsAsList(user.getHeartEvents());
         if (heartEvents.contains(eventId)) {
-            throw new RuntimeException("이미 즐겨찾기 목록에 존재하는 이벤트 입니다.");
+            throw new RuntimeException("Event is already in favorites");
         }
 
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
+
+        event.setFavoriteCount(event.getFavoriteCount() + 1);
+        eventRepository.save(event);
 
         heartEvents.add(eventId);
         user.setHeartEvents(heartEvents.stream().map(String::valueOf).collect(Collectors.joining(",")));
@@ -58,8 +61,13 @@ public class FavoriteService {
 
         List<Long> heartEvents = getHeartEventsAsList(user.getHeartEvents());
         if (!heartEvents.contains(eventId)) {
-            throw new RuntimeException("이벤트가 즐겨찾기 목록에 존재하지 않습니다.");
+            throw new RuntimeException("Event is not in favorites");
         }
+
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
+
+        event.setFavoriteCount(Math.max(event.getFavoriteCount() - 1, 0));  // 카운트가 0 이하로는 내려가지 않도록 설정
+        eventRepository.save(event);
 
         heartEvents.remove(eventId);
         user.setHeartEvents(heartEvents.stream().map(String::valueOf).collect(Collectors.joining(",")));
