@@ -2,11 +2,7 @@ package com.festibook.festibook_backend.event.entity;
 
 import com.festibook.festibook_backend.core.BaseEntity;
 import jakarta.persistence.Entity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Getter
@@ -36,4 +32,7 @@ public class Event extends BaseEntity {
     private double mapX;
 
     private double mapY;
+
+    @Builder.Default
+    private int favoriteCount = 0;
 }
