@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reviews")
+@RequestMapping("/api/reviews")
 @Tag(name = "Reviews", description = "리뷰 관련 API")
 @RequiredArgsConstructor
 public class ReviewController {
