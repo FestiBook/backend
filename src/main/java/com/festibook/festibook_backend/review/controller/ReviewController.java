@@ -25,7 +25,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping("/{eventId}")
+    @GetMapping("events/{eventId}")
     @Operation(summary = "이벤트별 리뷰 조회", description = "특정 이벤트에 대한 모든 리뷰를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰 목록이 성공적으로 반환되었습니다.",
@@ -86,7 +86,7 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("users/{userId}")
     @Operation(summary = "유저별 리뷰 조회", description = "특정 유저가 작성한 모든 리뷰를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "유저의 리뷰 목록이 성공적으로 반환되었습니다.",
@@ -97,6 +97,19 @@ public class ReviewController {
     public ResponseEntity<List<ReviewResponseDto>> getReviewsByUser(
             @Parameter(description = "조회할 유저 ID", required = true) @PathVariable Long userId) {
         List<ReviewResponseDto> reviews = reviewService.getReviewsByUser(userId);
+        return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping
+    @Operation(summary = "자신의 리뷰 조회", description = "현재 로그인한 유저가 작성한 모든 리뷰를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "리뷰 목록이 성공적으로 반환되었습니다.",
+                    content = @Content(schema = @Schema(implementation = ReviewResponseDto.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "서버 오류.", content = @Content)
+    })
+    public ResponseEntity<List<ReviewResponseDto>> getMyReviews(HttpServletRequest request) {
+        List<ReviewResponseDto> reviews = reviewService.getMyReviews(request);
         return ResponseEntity.ok(reviews);
     }
 }
