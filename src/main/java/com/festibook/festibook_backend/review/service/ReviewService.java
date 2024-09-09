@@ -90,4 +90,16 @@ public class ReviewService {
                 .map(ReviewResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
+    public List<ReviewResponseDto> getMyReviews(HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Review> reviews = reviewRepository.findByUser(user);
+        return reviews.stream()
+                .map(ReviewResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 }
