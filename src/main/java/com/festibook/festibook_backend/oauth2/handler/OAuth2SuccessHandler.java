@@ -1,6 +1,6 @@
 package com.festibook.festibook_backend.oauth2.handler;
 
-import com.festibook.festibook_backend.jwt.TokenService;
+import com.festibook.festibook_backend.jwt.service.TokenService;
 import com.festibook.festibook_backend.user.entity.User;
 import com.festibook.festibook_backend.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
 @Slf4j
 @Component
