@@ -3,7 +3,7 @@ package com.festibook.festibook_backend.favorite.service;
 import com.festibook.festibook_backend.favorite.dto.FavoriteEventResponseDto;
 import com.festibook.festibook_backend.event.entity.Event;
 import com.festibook.festibook_backend.event.repository.EventRepository;
-import com.festibook.festibook_backend.jwt.TokenService;
+import com.festibook.festibook_backend.jwt.service.TokenService;
 import com.festibook.festibook_backend.user.entity.User;
 import com.festibook.festibook_backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

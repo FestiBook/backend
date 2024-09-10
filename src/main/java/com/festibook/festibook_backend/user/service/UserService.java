@@ -1,6 +1,6 @@
 package com.festibook.festibook_backend.user.service;
 
-import com.festibook.festibook_backend.jwt.TokenService;
+import com.festibook.festibook_backend.jwt.service.TokenService;
 import com.festibook.festibook_backend.user.dto.UserRequestDto;
 import com.festibook.festibook_backend.user.dto.UserResponseDto;
 import com.festibook.festibook_backend.user.entity.User;

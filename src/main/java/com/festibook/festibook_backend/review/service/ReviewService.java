@@ -8,7 +8,7 @@ import com.festibook.festibook_backend.user.entity.User;
 import com.festibook.festibook_backend.user.repository.UserRepository;
 import com.festibook.festibook_backend.event.entity.Event;
 import com.festibook.festibook_backend.event.repository.EventRepository;
-import com.festibook.festibook_backend.jwt.TokenService;
+import com.festibook.festibook_backend.jwt.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
