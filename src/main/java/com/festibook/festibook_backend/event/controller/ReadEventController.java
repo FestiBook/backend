@@ -2,6 +2,9 @@ package com.festibook.festibook_backend.event.controller;
 
 import com.festibook.festibook_backend.core.share.Region;
 import com.festibook.festibook_backend.event.entity.Event;
+import com.festibook.festibook_backend.event.useCase.ReadEventSearchUseCase;
+import com.festibook.festibook_backend.event.useCase.ReadEventSearchUseCase.ReadEventSearchRequest;
+import com.festibook.festibook_backend.event.useCase.ReadEventSearchUseCase.ReadEventSearchResponse;
 import com.festibook.festibook_backend.event.useCase.ReadEventUseCase;
 import com.festibook.festibook_backend.event.useCase.ReadEventUseCase.ReadEventRequest;
 import com.festibook.festibook_backend.event.useCase.ReadEventUseCase.ReadEventResponse;
@@ -25,6 +28,8 @@ public class ReadEventController {
 
   private final ReadEventUseCase readEventUseCase;
 
+  private final ReadEventSearchUseCase readEventSearchUseCase;
+
   @GetMapping("/events")
   public ResponseEntity<List<Event>> readEventDetail(
       @ParameterObject ReadAdminHotelDetailRequest request) {
@@ -32,6 +37,17 @@ public class ReadEventController {
         .region(request.getRegion())
         .build());
     return ResponseEntity.ok(readEventResponse.getEvents());
+  }
+
+  @GetMapping("/events/search")
+  public ResponseEntity<List<Event>> readEventDetailSearch(
+      @ParameterObject ReadAdminHotelDetailSearchRequest request) {
+    ReadEventSearchResponse readEventSearchResponse = readEventSearchUseCase.execute(
+        ReadEventSearchRequest.builder()
+            .keyword(request.getKeyword())
+            .category(request.getCategory())
+            .build());
+    return ResponseEntity.ok(readEventSearchResponse.getEvents());
   }
 
   @Getter
@@ -47,6 +63,24 @@ public class ReadEventController {
         "DAEJEON", "DAEGU", "GWANGJU", "BUSAN", "ULSAN", "GYEONGGI", "GANGWON", "CHUNGNAM",
         "CHUNGBUK", "JEONBUK", "SEJONG", "GYEONGNAM", "JEONNAM", "GYEONGBUK", "JEJU"})
     private Region region;
+  }
+
+  @Getter
+  @Setter
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @ToString
+  @Schema(description = "이벤트 조회 요청")
+  public static class ReadAdminHotelDetailSearchRequest {
+
+    private String keyword;
+
+    private Category category;
+
+    public enum Category {
+      All, REGION, TITLE
+    }
   }
 }
 
