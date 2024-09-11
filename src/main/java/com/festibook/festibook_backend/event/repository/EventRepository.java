@@ -12,4 +12,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
   @Query("SELECT e FROM Event e WHERE e.address1 LIKE %:address%")
   List<Event> findByAddress(String address);
+
+  @Query("SELECT e FROM Event e WHERE e.title LIKE %:title%")
+  List<Event> findByTitle(String title);
+
+  @Query("SELECT e FROM Event e WHERE (e.title LIKE %:keyword% OR e.address1 LIKE %:keyword%)")
+  List<Event> findByTitleOrAddress(String keyword);
 }
