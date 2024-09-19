@@ -8,6 +8,7 @@ import com.festibook.festibook_backend.event.useCase.ReadEventSearchUseCase.Read
 import com.festibook.festibook_backend.event.useCase.ReadEventUseCase;
 import com.festibook.festibook_backend.event.useCase.ReadEventUseCase.ReadEventRequest;
 import com.festibook.festibook_backend.event.useCase.ReadEventUseCase.ReadEventResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,11 @@ public class ReadEventController {
 
   private final ReadEventSearchUseCase readEventSearchUseCase;
 
+  @Operation(
+      summary = "이벤트 조회 API (지역 필터)",
+      description = "지역을 기준으로 이벤트를 조회합니다. \n\n region의 값이 All인 경우 모든 이벤트를 조회합니다.",
+      operationId = "/events"
+  )
   @GetMapping("/events")
   public ResponseEntity<List<Event>> readEventDetail(
       @ParameterObject ReadAdminHotelDetailRequest request) {
@@ -39,6 +45,11 @@ public class ReadEventController {
     return ResponseEntity.ok(readEventResponse.getEvents());
   }
 
+  @Operation(
+      summary = "이벤트 조회 API (제목, 지역 검색)",
+      description = "keyword 기준으로 이벤트를 조회합니다. \n\n Category의 값이 All인 경우 제목과 지역 중 하나라도 존재하는 경우 조회합니다.",
+      operationId = "/events/search"
+  )
   @GetMapping("/events/search")
   public ResponseEntity<List<Event>> readEventDetailSearch(
       @ParameterObject ReadAdminHotelDetailSearchRequest request) {
