@@ -8,6 +8,7 @@ import com.festibook.festibook_backend.event.useCase.ReadEventDetailUseCase;
 import com.festibook.festibook_backend.event.useCase.ReadEventDetailUseCase.ReadEventDetailRequest;
 import com.festibook.festibook_backend.external.event.dto.EventDetailCommonResponse;
 import com.festibook.festibook_backend.external.event.dto.EventDetailIntroResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,11 @@ public class ReadEventDetailController {
 
   private final ReadEventDetailUseCase readEventDetailUseCase;
 
+  @Operation(
+      summary = "이벤트 상세 조회 API",
+      description = "이벤트를 상세 조회합니다.",
+      operationId = "/events/{eventId}"
+  )
   @GetMapping("/events/{eventId}")
   public ResponseEntity<ReadEventDetailResponse> readEventDetail(
       @PathVariable(name = "eventId") @Schema(example = "1234") Integer eventId) {
