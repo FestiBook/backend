@@ -66,4 +66,17 @@ public class UserController {
         userService.deleteUser(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃", description = "현재 로그인된 유저를 로그아웃시킵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그아웃 성공"),
+            @ApiResponse(responseCode = "401", description = "인증 실패", content = @Content),
+            @ApiResponse(responseCode = "500", description = "서버 오류", content = @Content)
+    })
+    public ResponseEntity<Void> logoutUser(
+            @Parameter(description = "액세스 토큰", required = true) HttpServletRequest request) {
+        userService.logout(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

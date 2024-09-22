@@ -8,6 +8,7 @@ import com.festibook.festibook_backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.regex.Pattern;
 
@@ -58,5 +59,12 @@ public class UserService {
                 .nickname(user.getNickname())
                 .platform(user.getPlatform())
                 .build();
+    }
+
+    @Transactional
+    public void logout(HttpServletRequest request) {
+        Long userId = tokenService.getUserIdFromToken(request);
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        tokenService.invalidateRefreshToken(user);
     }
 }
