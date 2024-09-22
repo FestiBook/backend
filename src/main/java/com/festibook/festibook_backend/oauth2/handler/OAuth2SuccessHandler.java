@@ -45,7 +45,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         User user = findOrCreateUser(name, registrationId);
 
         String accessToken = tokenService.generateAccessToken(user.getId());
-        String refreshToken = tokenService.generateRefreshToken();
+        String refreshToken = tokenService.generateRefreshToken(user);
 
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/redirect")
                 .queryParam("a", accessToken)
@@ -54,6 +54,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
+
 
     private String determinePlatform(Authentication authentication) {
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
