@@ -1,5 +1,6 @@
 package com.festibook.festibook_backend.jwt.controller;
 
+import com.festibook.festibook_backend.jwt.dto.TokenRequestDto;
 import com.festibook.festibook_backend.jwt.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,8 +28,8 @@ public class TokenController {
             @ApiResponse(responseCode = "401", description = "리프레쉬 토큰이 만료되었습니다."),
             @ApiResponse(responseCode = "403", description = "유효하지 않은 리프레쉬 토큰입니다.")
     })
-    public ResponseEntity<String> refreshAccessToken(HttpServletRequest request) {
-        String newAccessToken = tokenService.reGenerateAccessToken(request);
+    public ResponseEntity<String> refreshAccessToken(@RequestBody TokenRequestDto tokenRequest) {
+        String newAccessToken = tokenService.reGenerateAccessToken(tokenRequest.getRefreshToken());
         return new ResponseEntity<>(newAccessToken, HttpStatus.OK);
     }
 }
