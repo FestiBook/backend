@@ -27,7 +27,6 @@ public class CacheEventJob {
 
   private final EventRepository eventRepository;
 
-  @PostConstruct
   @Scheduled(cron = "0 0 1 * * *")
   public void CacheEventJobScheduler() {
     LocalDate currentDate = LocalDate.now();
