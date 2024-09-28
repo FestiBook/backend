@@ -56,7 +56,7 @@ public class ReviewController {
         return ResponseEntity.ok(review);
     }
 
-    @PutMapping("/{reviewId}")
+    @PatchMapping("/{reviewId}")
     @Operation(summary = "리뷰 수정", description = "기존 리뷰를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰가 성공적으로 수정되었습니다.",
