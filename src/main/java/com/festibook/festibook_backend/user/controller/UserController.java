@@ -38,7 +38,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PatchMapping
     @Operation(summary = "유저 닉네임 수정", description = "유저 닉네임을 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "유저 정보 수정 성공",
