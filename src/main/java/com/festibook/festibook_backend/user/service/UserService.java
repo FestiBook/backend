@@ -19,7 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
 
-    private static final String NICKNAME_REGEX = "^[a-zA-Z0-9]+$";
+    private static final String NICKNAME_REGEX = "^[a-zA-Z0-9가-힣]+$";
 
 
     public UserResponseDto getUserInfo(HttpServletRequest request) {
